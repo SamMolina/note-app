@@ -1,89 +1,63 @@
-const yargs = require('yargs')
+const express = require('express')
+const app = express()
+
 const chalk = require('chalk')
 const { addNote, removeNote, listNotes, readNote } = require('./notes')
 
-const infoMessage = message => chalk.black.bgBlueBright(message)
-const successMessage = message => chalk.black.bgGreen(message)
-const errorMessage = message => chalk.black.bgRed(message)
+const infoMessage = message => chalk.bold.magenta(message)
+const successMessage = message => chalk.bold.green(message)
+const errorMessage = message => chalk.bold.red(message)
 
-yargs.version('1.1.0') 
+console.log(infoMessage('Note App started and running'))
 
-yargs.command({
-    command: 'add',
-    describe: 'Adds a new note',
-    builder: {
-        title: {
-            describe: 'Note\'s title',
-            demandOption: true,
-            type: 'string'
-        },
-        body: {
-            describe: 'Note\'s body',
-            demandOption: true,
-            type: 'string'
-        }
-    },
-    handler(arg) {
-        try {
-            addNote(arg.title, arg.body)
-            console.log(successMessage('Note added!'))
-        } catch(e) {
-            console.log(errorMessage(e.message))
-        }
+app.get('/', (req, res) => {
+    res.send('Note App Backend')
+  })
+
+app.get('/add', (req, res) => {
+    const { title, body } = req.query
+    try {
+        addNote(title, body)
+        res.status(200).send('Note added!')
+        console.log(successMessage('Note added!'))
+    } catch(e) {
+        res.status(404).send(e.message)
+        console.log(errorMessage(e.message), '| title:', title, 'body:', body)
     }
 })
 
-yargs.command({
-    command: 'remove',
-    describe: 'Removes note',
-    builder: {
-        title: {
-            describe: 'Note\'s title',
-            demandOption: true,
-            type: 'string'
-        }
-    },
-    handler(arg) {
-        try {
-            removeNote(arg.title)
-            console.log(successMessage('Note removed!'))
-        } catch (e) {
-            console.log(errorMessage(e.message))
-        }
+app.get('/remove', (req, res) => {
+    const { title } = req.query
+    try {
+        removeNote(title)
+        res.status(200).send('Note removed!')
+        console.log(successMessage('Note removed!'), '| title:', title)
+    } catch(e) {
+        res.status(404).send(e.message)
+        console.log(errorMessage(e.message), '| title:', title)
     }
 })
 
-yargs.command({
-    command: 'list',
-    describe: 'Lists stored notes',
-    handler() {
-        console.log(infoMessage('Your notes:'))
+app.get('/list', (req, res) => {
+    try {
         const notes = listNotes()
-        notes.forEach(note => {
-            console.log(note.title)
-        })
+        res.status(200).send(notes)
+    } catch(e) {
+        res.status(404).send(e.message)
+        console.log(errorMessage(e.message))
     }
 })
 
-yargs.command({
-    command: 'read',
-    describe: 'Read a note',
-    builder: {
-        title: {
-            describe: 'Note\'s title',
-            demandOption: true,
-            type: 'string'
-        }
-    },
-    handler(arg) {
-        try {
-            const note = readNote(arg.title)
-            console.log(infoMessage(note.title))
-            console.log(note.body)
-        } catch(e) {
-            console.log(errorMessage(e.message))
-        }
+app.get('/read', (req, res) => {
+    const { title } = req.query
+    try {
+        const note = readNote(title)
+        res.status(200).send(note)
+        console.log(successMessage('Note readed!'))
+    } catch(e) {
+        res.status(404).send(e.message)
+        console.log(errorMessage(e.message), '| title:', title)
     }
 })
 
-console.log(yargs.argv)
+app.listen(3001)
