@@ -4,12 +4,14 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "start": "node app",
     "test": "jest"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "chalk": "^2.4.1",
+    "cors": "^2.8.5",
     "express": "^4.18.1",
     "validator": "^13.7.0",
     "yargs": "^17.5.0"
