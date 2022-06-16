@@ -43,7 +43,7 @@ app.post('/add', (req, res) => {
         addNote(title, body)
         const successData = getAlertData('ok', 'success', 'Note added!')
         res.status(200).send(successData)
-        console.log(successMessage(`Note with ${title} was added!`))
+        console.log(successMessage(`Note with "${title}" was added!`))
     } catch(e) {
         const errorData = getAlertData('error', 'danger', e.message)
         res.status(400).send(errorData)
@@ -57,7 +57,7 @@ app.delete('/remove', (req, res) => {
         removeNote(title)
         const successData = getAlertData('ok', 'success', 'Note removed!')
         res.status(200).send(successData)
-        console.log(successMessage('Note removed!'), '| title:', title)
+        console.log(successMessage(`Note with "${title}" was removed!`))
     } catch(e) {
         const errorData = getAlertData('error', 'danger', e.message)
         res.status(400).send(errorData)
@@ -69,6 +69,7 @@ app.get('/list', (req, res) => {
     try {
         const notes = listNotes()
         res.status(200).send(getData('ok', notes))
+        console.log(successMessage('Listed all notes!'))
     } catch(e) {
         const errorData = getAlertData('error', 'danger', e.message)
         res.status(400).send(errorData)
@@ -81,7 +82,7 @@ app.get('/read', (req, res) => {
     try {
         const note = readNote(title)
         res.status(200).send(getData('ok', note))
-        console.log(successMessage('Note readed!'))
+        console.log(successMessage(`Note with "${title}" was readed!`))
     } catch(e) {
         const errorData = getAlertData('error', 'danger', e.message)
         res.status(400).send(errorData)
