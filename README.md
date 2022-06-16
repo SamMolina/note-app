@@ -1,6 +1,6 @@
-# Note App
+# Notes App
 
-Note App is an web application that exposes APIs for creating, removing, listing and reading notes.
+Notes App is an web application that exposes APIs for creating, removing, listing and reading notes.
 
 ## Requirements
 
