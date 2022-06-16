@@ -61,6 +61,17 @@ curl \
     http://localhost:3001/add
 ```
 
+Example of response
+```
+{
+    "status": "ok",
+    "alert": {
+        "type": "success",
+        "message": "Note added!"
+    }
+}
+```
+
 ### Remove note
 
 Endpoint
@@ -86,6 +97,17 @@ curl \
     -X DELETE \
     -H "Content-Type: application/json" \
     http://localhost:3001/remove?title\=Books%20to%20buy
+```
+
+Example of response
+```
+{
+    "status": "ok",
+    "alert": {
+        "type": "success",
+        "message": "Note removed!"
+    }
+}
 ```
 
 ### Read note
@@ -115,6 +137,17 @@ curl \
     http://localhost:3001/read?title=Books%20to%20buy
 ```
 
+Example of response
+```
+{
+    "status": "ok",
+    "data": {
+        "title": "Books to buy",
+        "body": "Alice in Wonderland"
+    }
+}
+```
+
 ### List notes
 
 Endpoint
@@ -128,4 +161,21 @@ curl \
     -X GET \
     -H "Content-Type: application/json" \
     http://localhost:3001/list
+```
+
+Example of response
+```
+{
+    "status": "ok",
+    "data": [
+        {
+            "title": "Books to buy",
+            "body": "Alice in Wonderland"
+        },
+        {
+            "title": "Movies to watch",
+            "body": "How train your dragon"
+        }
+    ]
+}
 ```
